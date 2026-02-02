@@ -12,14 +12,51 @@ from aeon.dj_pipeline import acquisition, ephys, spike_sorting
 # Specify which table to populate: "PreProcessing", "SpikeSorting", or "PostProcessing"
 table_name = "SpikeSorting"
 # Specify the key to be populated
+# # First 30 hour test block
+# key = {'experiment_name': 'social-ephys0.1-aeon3',
+#        'probe': 'NP2004-001',
+#        'block_start': "2024-06-04 11:00:00",
+#        'block_end': "2024-06-05 17:00:00",
+#        'probe_type': 'neuropixels - NP2004',
+#        'electrode_config_name': '0-383',
+#        'electrode_group': '0-95',
+#        'paramset_id': '400'}
+
+
+# # Block 1 job 2263514
+# key = {'experiment_name': 'social-ephys0.1-aeon3',
+#        'probe': 'NP2004-001',
+#        'block_start': "2024-06-04 11:00:00",
+#        'block_end': "2024-06-04 14:00:00",
+#        'probe_type': 'neuropixels - NP2004',
+#        'electrode_config_name': '0-383',
+#        'electrode_group': '0-95',
+#        'paramset_id': '400'}
+
+# # Block 2 job 2263702
+# key = {'experiment_name': 'social-ephys0.1-aeon3',
+#        'probe': 'NP2004-001',
+#        'block_start': "2024-06-04 13:00:00",
+#        'block_end': "2024-06-04 16:00:00",
+#        'probe_type': 'neuropixels - NP2004',
+#        'electrode_config_name': '0-383',
+#        'electrode_group': '0-95',
+#        'paramset_id': '400'}
+
+# Block 3 job 2264184
 key = {'experiment_name': 'social-ephys0.1-aeon3',
        'probe': 'NP2004-001',
-       'block_start': "2024-06-04 11:00:00",
-       'block_end': "2024-06-10 12:00:00",
+       'block_start': "2024-06-04 15:00:00",
+       'block_end': "2024-06-04 18:00:00",
        'probe_type': 'neuropixels - NP2004',
        'electrode_config_name': '0-383',
-       'electrode_group': '0-143',
-       'paramset_id': '250'}
+       'electrode_group': '0-95',
+       'paramset_id': '400'}
+"""
+Then use these lines to submit the job to slurm from the hpc
+cd ProjectAeon/aeon_mecha
+sbatch run_aeon_spike_sorting.sh
+"""
 _CLEAR_JOB = True  # Whether to clear any existing 'error' job for this key before populating
 
 
