@@ -59,12 +59,29 @@ class ElectrodeConfig(dj.Lookup):
         -> ProbeType.Electrode
         """
 
+@schema
+class TargetArea(dj.Lookup):
+    definition = """
+    target_area: varchar(32)  # e.g. "hippocampus", "amygdala"
+    """
+
+
+@schema
+class ProbeInsertion(dj.Manual):
+    definition = """
+    -> acquisition.Experiment.Subject
+    insertion_number: int  # e.g. 1, 2, 3
+    ---
+    -> [nullable] TargetArea
+    -> Probe
+    implantation_date=null: datetime(6)  # date of the implantation
+    """
+
 
 @schema
 class EphysChunk(dj.Manual):
     definition = """  # A recording period corresponds to a 1-hour ephys data acquisition
-    -> acquisition.Experiment
-    -> Probe  # the probe used for this ephys recording
+    -> ProbeInsertion
     chunk_start: datetime(6)  # start of an ephys chunk (in HARP clock)
     ---
     chunk_end: datetime(6)    # end of an ephys chunk (in HARP clock)

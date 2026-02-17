@@ -427,6 +427,25 @@ def save_manual_curation(key: dict, description: str = "") -> int:
             )
             parent_curation_id = -1
 
+    # Ensure 'probe' is in the key (required by EphysBlock, which ManualCuration inherits from)
+    # If not provided, fetch it from EphysBlock table
+    if "probe" not in key:
+        ephys_block_key = {
+            "experiment_name": key["experiment_name"],
+            "block_start": key["block_start"],
+            "block_end": key["block_end"],
+        }
+        ephys_block_entry = ephys.EphysBlock & ephys_block_key
+        if not ephys_block_entry:
+            raise ValueError(
+                f"No EphysBlock entry found for the provided key. "
+                f"Please ensure the key is correct. "
+                f"Key: {ephys_block_key}"
+            )
+        probe_value = ephys_block_entry.fetch1("probe")
+        key["probe"] = probe_value
+        logger.info(f"Fetched probe='{probe_value}' from EphysBlock table")
+
     # Prepare ManualCuration entry
     curation_datetime = datetime.now(UTC)
     curation_entry = {
@@ -474,6 +493,25 @@ def make_curation_official(key: dict, curation_id: int) -> None:
             - paramset_id
         curation_id: The curation_id of the ManualCuration entry to make official.
     """
+    # Ensure 'probe' is in the key (required by EphysBlock, which SortedSpikes inherits from)
+    # If not provided, fetch it from EphysBlock table
+    if "probe" not in key:
+        ephys_block_key = {
+            "experiment_name": key["experiment_name"],
+            "block_start": key["block_start"],
+            "block_end": key["block_end"],
+        }
+        ephys_block_entry = ephys.EphysBlock & ephys_block_key
+        if not ephys_block_entry:
+            raise ValueError(
+                f"No EphysBlock entry found for the provided key. "
+                f"Please ensure the key is correct. "
+                f"Key: {ephys_block_key}"
+            )
+        probe_value = ephys_block_entry.fetch1("probe")
+        key["probe"] = probe_value
+        logger.info(f"Fetched probe='{probe_value}' from EphysBlock table")
+
     # Verify the curation exists
     curation_key = {**key, "curation_id": curation_id}
     if not (ManualCuration & curation_key):
@@ -527,6 +565,25 @@ def restore_raw_sorting(key: dict) -> None:
             - electrode_group
             - paramset_id
     """
+    # Ensure 'probe' is in the key (required by EphysBlock, which SortedSpikes inherits from)
+    # If not provided, fetch it from EphysBlock table
+    if "probe" not in key:
+        ephys_block_key = {
+            "experiment_name": key["experiment_name"],
+            "block_start": key["block_start"],
+            "block_end": key["block_end"],
+        }
+        ephys_block_entry = ephys.EphysBlock & ephys_block_key
+        if not ephys_block_entry:
+            raise ValueError(
+                f"No EphysBlock entry found for the provided key. "
+                f"Please ensure the key is correct. "
+                f"Key: {ephys_block_key}"
+            )
+        probe_value = ephys_block_entry.fetch1("probe")
+        key["probe"] = probe_value
+        logger.info(f"Fetched probe='{probe_value}' from EphysBlock table")
+
     # Check if there's an official curation
     official_curation = OfficialCuration & key
     if not official_curation:
